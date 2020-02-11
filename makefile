@@ -1,4 +1,4 @@
-SRCS	= dynarray.c \
+SRCS	= dynarray.c dynarray_add.c \
 
 OBJS	= ${SRCS:.c=.o}
 
