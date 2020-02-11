@@ -6,7 +6,7 @@
 /*   By: abaur <abaur@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 14:29:36 by abaur             #+#    #+#             */
-/*   Updated: 2020/02/11 15:37:38 by abaur            ###   ########.fr       */
+/*   Updated: 2020/02/11 15:46:51 by abaur            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 **	false Allocation failed.
 */
 
-extern short	dynarrayinit(t_dynarray *this, size_t type, size_t capacity)
+extern short	dyninit(t_dynarray *this, size_t type, size_t capacity)
 {
 	this->content = malloc(type * capacity);
 	if (!this->content)
@@ -55,7 +55,7 @@ static void		arraycpy(const unsigned char *src, unsigned char *dst,
 ** 	false allocation failed.
 */
 
-extern short	arrayexpand(t_dynarray *this, unsigned int amount)
+extern short	dynexpand(t_dynarray *this, unsigned int amount)
 {
 	size_t			ncap;
 	unsigned char	*ncontent;

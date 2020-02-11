@@ -6,7 +6,7 @@
 /*   By: abaur <abaur@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 15:13:54 by abaur             #+#    #+#             */
-/*   Updated: 2020/02/11 15:38:30 by abaur            ###   ########.fr       */
+/*   Updated: 2020/02/11 15:47:57 by abaur            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main()
 	int**	content = (int**)&array.content;
 	short	b;
 
-	b = dynarrayinit(&array, sizeof(int), 32);
+	b = dyninit(&array, sizeof(int), 32);
 	if (!b){
 		printf("Malloc failed\n");
 		exit(-1);
@@ -36,7 +36,7 @@ int	main()
 			printf("[FAILURE][%i]: %d\n", i, **content);
 
 	array.length = 32;
-	arrayexpand(&array, 128 - 32);
+	dynexpand(&array, 128 - 32);
 	if (!b){
 		printf("Malloc failed\n");
 		exit(-1);
