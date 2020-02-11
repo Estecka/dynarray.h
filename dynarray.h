@@ -34,4 +34,6 @@ struct	s_dynarray
 short	dynarrayinit(t_dynarray *this, size_t type, size_t capacity);
 short	arrayexpand(t_dynarray *this, unsigned int amount);
 
+short	dyninsert(t_dynarray *this, size_t index, const void *value);
+
 #endif
