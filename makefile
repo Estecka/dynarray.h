@@ -3,6 +3,7 @@ SRCS	= dynarray.c \
 OBJS	= ${SRCS:.c=.o}
 
 NAME	= libdynarray.a
+TEST	= test.out
 
 CC		= gcc
 CFLAGS	= -Wall -Wextra -Werror
@@ -11,7 +12,13 @@ CFLAGS	= -Wall -Wextra -Werror
 ${NAME}: ${OBJS}
 	ar rcs ${NAME} ${OBJS}
 
-all: ${NAME}
+test: ${TEST}
+${TEST}: ${NAME} .test/main.c
+	gcc -o ${TEST} \
+	.test/main.c -L ./ -ldynarray
+	${CFlAGS} \
+
+all: ${NAME} ${TEST}
 
 clean:
 	rm -f ${OBJS}
@@ -22,4 +29,4 @@ fclean: clean
 
 re: fclean ${NAME}
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re test

@@ -6,7 +6,7 @@
 /*   By: abaur <abaur@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 14:29:36 by abaur             #+#    #+#             */
-/*   Updated: 2020/02/11 15:11:50 by abaur            ###   ########.fr       */
+/*   Updated: 2020/02/11 15:37:38 by abaur            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ extern short	arrayexpand(t_dynarray *this, unsigned int amount)
 	ncontent = malloc(ncap * this->type);
 	if (!ncontent)
 		return (0);
-	arraycpy((unsigned char*)this->content, (unsigned char*)ncap,
+	arraycpy((unsigned char*)this->content, (unsigned char*)ncontent,
 		this->length * this->type);
 	free(this->content);
 	this->content = ncontent;
