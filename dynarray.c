@@ -6,11 +6,11 @@
 /*   By: abaur <abaur@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 14:29:36 by abaur             #+#    #+#             */
-/*   Updated: 2020/02/11 14:45:03 by abaur            ###   ########.fr       */
+/*   Updated: 2020/02/11 15:11:50 by abaur            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "dynarray.h"
+#include "dynarray.h"
 
 /*
 ** Initializes a new dynarray.
@@ -24,6 +24,26 @@
 
 extern short	dynarrayinit(t_dynarray *this, size_t type, size_t capacity)
 {
+	this->content = malloc(type * capacity);
+	if (!this->content)
+		return (0);
+	this->type = type;
+	this->capacity = capacity;
+	this->length = 0;
+	return (1);
+}
+
+static void		arraycpy(const unsigned char *src, unsigned char *dst,
+	size_t length)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < length)
+	{
+		dst[i] = src[i];
+		i++;
+	}
 }
 
 /*
@@ -37,4 +57,21 @@ extern short	dynarrayinit(t_dynarray *this, size_t type, size_t capacity)
 
 extern short	arrayexpand(t_dynarray *this, unsigned int amount)
 {
+	size_t			ncap;
+	unsigned char	*ncontent;
+
+	if (this->capacity >= this->length + amount)
+		return (1);
+	ncap = this->capacity * 2;
+	while (ncap < this->length + amount)
+		ncap *= 2;
+	ncontent = malloc(ncap * this->type);
+	if (!ncontent)
+		return (0);
+	arraycpy((unsigned char*)this->content, (unsigned char*)ncap,
+		this->length * this->type);
+	free(this->content);
+	this->content = ncontent;
+	this->capacity = ncap;
+	return (1);
 }
