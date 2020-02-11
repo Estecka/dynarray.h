@@ -6,7 +6,7 @@
 /*   By: abaur <abaur@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 14:29:36 by abaur             #+#    #+#             */
-/*   Updated: 2020/02/11 14:39:17 by abaur            ###   ########.fr       */
+/*   Updated: 2020/02/11 14:45:03 by abaur            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,3 @@ extern short	dynarrayinit(t_dynarray *this, size_t type, size_t capacity)
 extern short	arrayexpand(t_dynarray *this, unsigned int amount)
 {
 }
-
-#endif

@@ -6,7 +6,7 @@
 /*   By: abaur <abaur@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 14:16:38 by abaur             #+#    #+#             */
-/*   Updated: 2020/02/11 14:32:34 by abaur            ###   ########.fr       */
+/*   Updated: 2020/02/11 14:44:42 by abaur            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ struct	s_dynarray
 	size_t	capacity;
 	size_t	length;
 	void	*content;
-}
+};
 
 short	dynarrayinit(t_dynarray *this, size_t type, size_t capacity);
 short	arrayexpand(t_dynarray *this,  unsigned int amount);
