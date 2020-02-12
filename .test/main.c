@@ -13,43 +13,95 @@
 #include <stdio.h>
 #include "../dynarray.h"
 
+static void printarr(t_dynarray* this)
+{
+	int* content = this->content;
+
+	printf("%lu : \n", this->length);
+	for (int i=0; i<this->length; i++)
+		printf("[%i:%i]", i, content[i]);
+	printf("\n\n");
+}
+
+static short assertcap(t_dynarray* this, int cap)
+{
+	if (this->capacity != cap) {
+		printf("[FAILURE][capacity]: %lu != %d\n", this->capacity, cap);
+		return (0);
+	}
+	return (1);
+}
+static short assertlength(t_dynarray* this, int cap)
+{
+	if (this->length != cap) {
+		printf("[FAILURE][length]: %lu != %d\n", this->length, cap);
+		return (0);
+	}
+	return (1);
+}
+
+static short	assert(t_dynarray* this)
+{
+	int* content = this->content;
+	short r = 1;
+
+	for (int i=0; i<this->length; i++)
+		if (i != content[i])
+		{
+			printf("[FAILURE][%i]: %d\n", i, content[i]);
+			r = 0;
+		}
+	return (r);
+}
+
 int	main()
 {
 	t_dynarray array;
 	int**	content = (int**)&array.content;
-	short	b;
+	int		value;
+	short	err;
 
-	b = dyninit(&array, sizeof(int), 32);
-	if (!b){
+	// Dyninit
+	err = dyninit(&array, sizeof(int), 32);
+	if (!err){
 		printf("Malloc failed\n");
 		exit(-1);
 	}
-	if (array.capacity != 32)
-		printf("[FAILURE][capacity]: %lu\n", array.capacity);
+	assertcap(&array, 32);
 	
+	array.length = 32;
 	for (int i=0; i<32; i++)
 		(*content)[i] = i;
 
+	assert(&array);
 
-	for (int i=0; i<32; i++)
-		if ((*content)[i] != i)
-			printf("[FAILURE][%i]: %d\n", i, **content);
-
-	array.length = 32;
-	dynexpand(&array, 128 - 32);
-	if (!b){
+	// Dynexpand
+	err = dynexpand(&array, 64 - 32);
+	if (!err){
 		printf("Malloc failed\n");
 		exit(-1);
 	}
-	if (array.capacity != 128)
-		printf("[FAILURE][capacity]: %lu\n", array.capacity);
 
-	for (int i=0; i<32; i++)
-		if ((*content)[i] != i)
-			printf("[FAILURE][%i]: %d\n", i, **content);
+	assertcap(&array, 64);
+	assert(&array);
 
-	for (int i=32; i<128; i++)
+	array.length = 64;
+	for (int i=32; i<64; i++)
 		(*content)[i] = i;
 
-	printf("OK\n");
+	// Dynappend
+	value = 64;
+	dynappend(&array, &value);
+	assertlength(&array, 65);
+	assert(&array);
+
+
+	// Dyninsert
+	for (int i=32; i<array.length; i++)
+		(*content)[i] = i +1;
+	value = 32;
+	dyninsert(&array, value, &value);
+	assert(&array);
+
+	printf("Done\n");
 }

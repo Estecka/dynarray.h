@@ -25,7 +25,6 @@ static void		dynset(t_dynarray *this, size_t i, const void *value)
 		dst[i] = src[i];
 		i++;
 	}
-	this->length++;
 }
 
 /*
@@ -42,6 +41,7 @@ extern short	dynappend(t_dynarray *this, const void *value)
 	if (!dynexpand(this, 1))
 		return (0);
 	dynset(this, this->length, value);
+	this->length++;
 	return (1);
 }
 
