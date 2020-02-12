@@ -6,7 +6,7 @@
 /*   By: abaur <abaur@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 15:42:05 by abaur             #+#    #+#             */
-/*   Updated: 2020/02/11 16:10:32 by abaur            ###   ########.fr       */
+/*   Updated: 2020/02/12 12:56:27 by abaur            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ extern short	dyninsert(t_dynarray *this, size_t index, const void *value)
 {
 	size_t	i;
 	size_t	min;
-	char 	*content;
+	char	*content;
 
 	if (index < 0 || this->length < index)
 		return (0);
