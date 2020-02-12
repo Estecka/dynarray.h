@@ -44,12 +44,12 @@ int	main()
 	if (array.capacity != 128)
 		printf("[FAILURE][capacity]: %lu\n", array.capacity);
 
-	for (int i=0; i<32; i++){
-		printf("[%i]\n", i);
+	for (int i=0; i<32; i++)
 		if ((*content)[i] != i)
 			printf("[FAILURE][%i]: %d\n", i, **content);
-	}
 
 	for (int i=32; i<128; i++)
 		(*content)[i] = i;
+
+	printf("OK\n");
 }

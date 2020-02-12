@@ -37,23 +37,11 @@ static void		dynset(t_dynarray *this, size_t i, const void *value)
 ** 	false Allocation failed.
 */
 
-short	dynappend(t_dynarray *this, const void *value)
+extern short	dynappend(t_dynarray *this, const void *value)
 {
-	const char *src;
-	char		*dst;
-	size_t	 	i;
-
 	if (!dynexpand(this, 1))
 		return (0);
-	src = (const char*)value;
-	dst = (char*)(this->content + (this->length * this->type));
-	i = 0;
-	while (i < this->type)
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	this->length++;
+	dynset(this, this->length, value);
 	return (1);
 }
 
@@ -77,7 +65,7 @@ short	dynappend(t_dynarray *this, const void *value)
 ** 	It can never be smaller than 0.
 */
 
-short	dyninsert(t_dynarray *this, size_t index, const void *value)
+extern short	dyninsert(t_dynarray *this, size_t index, const void *value)
 {
 	size_t	i;
 	size_t	min;
