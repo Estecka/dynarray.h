@@ -6,7 +6,7 @@
 /*   By: abaur <abaur@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 15:42:05 by abaur             #+#    #+#             */
-/*   Updated: 2020/02/12 12:56:27 by abaur            ###   ########.fr       */
+/*   Updated: 2020/02/12 15:15:34 by abaur            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ extern short	dynappend(t_dynarray *this, const void *value)
 ** 	Because `length` must be greater than 0, i can never start at 0,
 ** 	the smallest possible starting position is `type - 1`.
 ** @var size_t min The position of the first byte of the first item to be moved
-** 	It can never be smaller than 0.
+** 	It can be as small as 0, in which case `i <= min` would fail. Thus `i != 0`
+** 	 must also be checked at the end of each loop.
 */
 
 extern short	dyninsert(t_dynarray *this, size_t index, const void *value)
@@ -83,7 +84,8 @@ extern short	dyninsert(t_dynarray *this, size_t index, const void *value)
 	while (i >= min)
 	{
 		content[i + this->type] = content[i];
-		i--;
+		if (!i--)
+			break ;
 	}
 	this->length++;
 	dynset(this, index, value);
