@@ -72,7 +72,7 @@ extern short	dyninsert(t_dynarray *this, size_t index, const void *value)
 	size_t	min;
 	char	*content;
 
-	if (index < 0 || this->length < index)
+	if (this->length < index)
 		return (0);
 	if (index == this->length)
 		return (dynappend(this, value));
