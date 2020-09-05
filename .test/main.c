@@ -59,7 +59,7 @@ int	main()
 	t_dynarray array;
 	int**	content = (int**)&array.content;
 	int		value;
-	short	err;
+	void*	err;
 
 	// Dyninit
 	err = dyninit(&array, sizeof(int), 32);

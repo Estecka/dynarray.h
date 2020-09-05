@@ -17,20 +17,18 @@
 ** @param t_dynarray* this The array to initialize.
 ** @param size_t type	The size of a single element of the stored type.
 ** @param size_t capacity	The initial size of the array.
-** @return bool
-** 	true  OK
-**	false Allocation failed.
+** @return void* The updated pointer to the array, or NULL if an error occured.
 */
 
-extern short	dyninit(t_dynarray *this, size_t type, size_t capacity)
+extern void		*dyninit(t_dynarray *this, size_t type, size_t capacity)
 {
 	this->content = malloc(type * capacity);
 	if (!this->content)
-		return (0);
+		return (NULL);
 	this->type = type;
 	this->capacity = capacity;
 	this->length = 0;
-	return (1);
+	return (this->content);
 }
 
 static void		arraycpy(const unsigned char *src, unsigned char *dst,
@@ -50,28 +48,26 @@ static void		arraycpy(const unsigned char *src, unsigned char *dst,
 ** Makes sure the array can contain more elements.
 ** @param t_dynarray* this	The array to expand.
 ** @param unsigned int amount	The amount of extra elements needed.
-** @return bool
-** 	true  OK
-** 	false allocation failed.
+** @return void* The updated pointer to the array, or NULL if an error occured.
 */
 
-extern short	dynexpand(t_dynarray *this, unsigned int amount)
+extern void		*dynexpand(t_dynarray *this, unsigned int amount)
 {
 	size_t			ncap;
 	unsigned char	*ncontent;
 
 	if (this->capacity >= this->length + amount)
-		return (1);
+		return (this->content);
 	ncap = this->capacity * 2;
 	while (ncap < this->length + amount)
 		ncap *= 2;
 	ncontent = malloc(ncap * this->type);
 	if (!ncontent)
-		return (0);
+		return (NULL);
 	arraycpy((unsigned char*)this->content, (unsigned char*)ncontent,
 		this->length * this->type);
 	free(this->content);
 	this->content = ncontent;
 	this->capacity = ncap;
-	return (1);
+	return (this->content);
 }

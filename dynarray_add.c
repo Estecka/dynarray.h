@@ -31,18 +31,16 @@ static void		dynset(t_dynarray *this, size_t i, const void *value)
 ** Add an item at the end of the array.
 ** @param t_dynarray* this	The array to expand.
 ** @param void* value	A pointer to the value to copy into the array.
-** @return bool
-** 	true  OK
-** 	false Allocation failed.
+** @return void* The updated pointer to the array, or NULL if an error occured.
 */
 
-extern short	dynappend(t_dynarray *this, const void *value)
+extern void		*dynappend(t_dynarray *this, const void *value)
 {
 	if (!dynexpand(this, 1))
-		return (0);
+		return (NULL);
 	dynset(this, this->length, value);
 	this->length++;
-	return (1);
+	return (this->content);
 }
 
 /*
@@ -50,9 +48,7 @@ extern short	dynappend(t_dynarray *this, const void *value)
 ** @param t_dynarray* this	The array where to insert.
 ** @param size_t index	The position where to insert the element.
 ** @param const void* value	A pointer to the value to copy into the array.
-** @return bool
-** 	true  OK
-** 	false Allocation failed / Index out of range.
+** @return void* The updated pointer to the array, or NULL if an error occured.
 */
 
 /*
@@ -66,18 +62,18 @@ extern short	dynappend(t_dynarray *this, const void *value)
 ** 	 must also be checked at the end of each loop.
 */
 
-extern short	dyninsert(t_dynarray *this, size_t index, const void *value)
+extern void		*dyninsert(t_dynarray *this, size_t index, const void *value)
 {
 	size_t	i;
 	size_t	min;
 	char	*content;
 
 	if (this->length < index)
-		return (0);
+		return (NULL);
 	if (index == this->length)
 		return (dynappend(this, value));
 	if (!dynexpand(this, 1))
-		return (0);
+		return (NULL);
 	content = (char*)this->content;
 	i = (this->length * this->type) - 1;
 	min = index * this->type;
@@ -89,5 +85,5 @@ extern short	dyninsert(t_dynarray *this, size_t index, const void *value)
 	}
 	this->length++;
 	dynset(this, index, value);
-	return (1);
+	return (this->content);
 }

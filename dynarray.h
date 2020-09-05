@@ -31,10 +31,10 @@ struct	s_dynarray
 	void	*content;
 };
 
-short	dyninit(t_dynarray *this, size_t type, size_t capacity);
-short	dynexpand(t_dynarray *this, unsigned int amount);
+void	*dyninit(t_dynarray *this, size_t type, size_t capacity);
+void	*dynexpand(t_dynarray *this, unsigned int amount);
 
-short	dynappend(t_dynarray *this, const void *value);
-short	dyninsert(t_dynarray *this, size_t index, const void *value);
+void	*dynappend(t_dynarray *this, const void *value);
+void	*dyninsert(t_dynarray *this, size_t index, const void *value);
 
 #endif
