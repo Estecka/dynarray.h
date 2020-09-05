@@ -103,5 +103,16 @@ int	main()
 	dyninsert(&array, value, &value);
 	assert(&array);
 
+	// Dynappendnull
+	dynexpand(&array, 4);
+	array.length -= 4;
+	for (int i=0; i<4; i++)
+		(*content)[array.length + i] = -1;
+	for (int i=0; i<4; i++)
+		dynappendnull(&array);
+	for (int i=4; i>0; i--)
+		if ((*content)[array.length - i] != 0)
+			printf("[FAILURE][Value] %d != 0\n", (*content)[array.length - i]);
+
 	printf("Done\n");
 }

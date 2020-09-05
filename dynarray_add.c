@@ -44,6 +44,27 @@ extern void		*dynappend(t_dynarray *this, const void *value)
 }
 
 /*
+** Add a zero-ed element at the end of the array.
+** @param t_dynarray* this	The array to expand.
+** @return void* The updated pointer to the array, or NULL if an error occured.
+*/
+
+extern void		*dynappendnull(t_dynarray *this)
+{
+	unsigned char	*cursor;
+	unsigned char	*limit;
+
+	if (!dynexpand(this, 1))
+		return (NULL);
+	cursor = this->content + (this->length * this->type);
+	limit = cursor + this->type;
+	while (cursor < limit)
+		*(cursor++) = 0;
+	this->length++;
+	return (this->content);
+}
+
+/*
 ** Inserts an element in the middle of an array.
 ** @param t_dynarray* this	The array where to insert.
 ** @param size_t index	The position where to insert the element.
