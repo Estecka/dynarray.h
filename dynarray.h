@@ -37,5 +37,6 @@ void	*dynexpand(t_dynarray *this, unsigned int amount);
 void	*dynappend(t_dynarray *this, const void *value);
 void	*dynappendnull(t_dynarray *this);
 void	*dyninsert(t_dynarray *this, size_t index, const void *value);
+void	*dynget(t_dynarray *this, size_t index);
 
 #endif
