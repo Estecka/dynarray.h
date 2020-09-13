@@ -18,7 +18,10 @@
 /*
 ** @var size_t type	The size of each element.
 ** @var size_t capacity	The maximum capacity of the array object.
-** @var size_t length	The current amount of items in the array.
+** @var size_t length	The current amount of items in the array. This does NOT
+**  include the optional NULL-terminator.
+** @var bool nullterm	Whether the array should have an automatic NULL-termina
+** tor.
 ** @var void* content	The actual content of the array.
 */
 
@@ -28,15 +31,21 @@ struct	s_dynarray
 	size_t	type;
 	size_t	capacity;
 	size_t	length;
+	short	nullterm;
 	void	*content;
 };
 
-void	*dyninit(t_dynarray *this, size_t type, size_t capacity);
+void	*dyninit(t_dynarray *this, size_t type, size_t capacity,
+short nullterm);
 void	*dynexpand(t_dynarray *this, unsigned int amount);
 
 void	*dynappend(t_dynarray *this, const void *value);
 void	*dynappendnull(t_dynarray *this);
 void	*dyninsert(t_dynarray *this, size_t index, const void *value);
+
+void	dynset(t_dynarray *this, size_t i, const void *value);
+void	dynsetnull(t_dynarray *this, size_t i);
+
 void	*dynget(t_dynarray *this, size_t index);
 
 #endif

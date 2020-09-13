@@ -62,7 +62,7 @@ int	main()
 	void*	err;
 
 	// Dyninit
-	err = dyninit(&array, sizeof(int), 32);
+	err = dyninit(&array, sizeof(int), 32, 0);
 	if (!err){
 		printf("Malloc failed\n");
 		exit(-1);

@@ -12,7 +12,15 @@
 
 #include "dynarray.h"
 
-static void		dynset(t_dynarray *this, size_t i, const void *value)
+/*
+** Sets the value of an existing element of the array.
+** Index overflow and underflow are not checked for.
+** @param t_dynarray this	The array to edit.
+** @param size_t i	The index of the element to overwrite.
+** @param const void*	A pointer to the value to be copied.
+*/
+
+extern void		dynset(t_dynarray *this, size_t i, const void *value)
 {
 	const char	*src;
 	char		*dst;
@@ -28,6 +36,24 @@ static void		dynset(t_dynarray *this, size_t i, const void *value)
 }
 
 /*
+** Sets the existing element of the array to zeroes.
+** Index overflow and underflow are not checked for.
+** @param t_dynarray this	The array to edit.
+** @param size_t i	The index of the element to overwrite.
+*/
+
+extern void		dynsetnull(t_dynarray *this, size_t i)
+{
+	unsigned char	*cursor;
+	unsigned char	*limit;
+
+	cursor = this->content + (i * this->type);
+	limit = cursor + this->type;
+	while (cursor < limit)
+		*(cursor++) = 0;
+}
+
+/*
 ** Add an item at the end of the array.
 ** @param t_dynarray* this	The array to expand.
 ** @param void* value	A pointer to the value to copy into the array.
@@ -40,27 +66,23 @@ extern void		*dynappend(t_dynarray *this, const void *value)
 		return (NULL);
 	dynset(this, this->length, value);
 	this->length++;
+	if (this->nullterm)
+		dynsetnull(this, this->length);
 	return (this->content);
 }
 
 /*
 ** Add a zero-ed element at the end of the array.
+** This does not count as the automatic NULL-terminator.
 ** @param t_dynarray* this	The array to expand.
 ** @return void* The updated pointer to the array, or NULL if an error occured.
 */
 
 extern void		*dynappendnull(t_dynarray *this)
 {
-	unsigned char	*cursor;
-	unsigned char	*limit;
-
 	if (!dynexpand(this, 1))
 		return (NULL);
-	cursor = this->content + (this->length * this->type);
-	limit = cursor + this->type;
-	while (cursor < limit)
-		*(cursor++) = 0;
-	this->length++;
+	dynsetnull(this, this->nullterm ? ++this->length : this->length++);
 	return (this->content);
 }
 
@@ -96,7 +118,7 @@ extern void		*dyninsert(t_dynarray *this, size_t index, const void *value)
 	if (!dynexpand(this, 1))
 		return (NULL);
 	content = (char*)this->content;
-	i = (this->length * this->type) - 1;
+	i = ((this->length + this->nullterm) * this->type) - 1;
 	min = index * this->type;
 	while (i >= min)
 	{

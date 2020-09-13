@@ -1,3 +1,5 @@
+HDRS	= dynarray.h \
+
 SRCS	= dynarray.c dynarray_add.c \
 
 OBJS	= ${SRCS:.c=.o}
@@ -17,6 +19,8 @@ ${TEST}: ${NAME} .test/main.c
 	gcc -o ${TEST} \
 	.test/main.c -L ./ -ldynarray
 	${CFlAGS} \
+
+${OBJS}: ${HDRS}
 
 all: ${NAME} ${TEST}
 

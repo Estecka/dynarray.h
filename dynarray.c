@@ -15,19 +15,23 @@
 /*
 ** Initializes a new dynarray.
 ** In case of error, all members of the dynarray will still be initialized, but
-**  its content will be NULL and its capacity 0.
+**  its content will be NULL, its capacity 0, and nullterm FALSE.
 ** @param t_dynarray* this The array to initialize.
 ** @param size_t type	The size of a single element of the stored type.
 ** @param size_t capacity	The initial size of the array.
 ** @return void* The updated pointer to the array, or NULL if an error occured.
 */
 
-extern void		*dyninit(t_dynarray *this, size_t type, size_t capacity)
+extern void		*dyninit(t_dynarray *this, size_t type, size_t capacity,
+short nullterm)
 {
 	this->content = malloc(type * capacity);
 	this->type = type;
 	this->capacity = this->content ? capacity : 0;
 	this->length = 0;
+	this->nullterm = nullterm && this->content;
+	if (this->nullterm)
+		dynsetnull(this, 0);
 	return (this->content);
 }
 
@@ -46,6 +50,7 @@ static void		arraycpy(const unsigned char *src, unsigned char *dst,
 
 /*
 ** Makes sure the array can contain more elements.
+** The optional NULL-terminator is automatically accounted for.
 ** If the array evern needs to be expanded, its capacity will be doubled.
 ** This only expands the array's CAPACITY, not its LENGTH.
 ** @param t_dynarray* this	The array to expand.
@@ -58,16 +63,16 @@ extern void		*dynexpand(t_dynarray *this, unsigned int amount)
 	size_t			ncap;
 	unsigned char	*ncontent;
 
-	if (this->capacity >= this->length + amount)
+	if (this->capacity >= this->length + this->nullterm + amount)
 		return (this->content);
 	ncap = this->capacity * 2;
-	while (ncap < this->length + amount)
+	while (ncap < this->length + this->nullterm + amount)
 		ncap *= 2;
 	ncontent = malloc(ncap * this->type);
 	if (!ncontent)
 		return (NULL);
 	arraycpy((unsigned char*)this->content, (unsigned char*)ncontent,
-		this->length * this->type);
+		(this->length + this->nullterm) * this->type);
 	free(this->content);
 	this->content = ncontent;
 	this->capacity = ncap;
@@ -83,5 +88,5 @@ extern void		*dynexpand(t_dynarray *this, unsigned int amount)
 
 extern void		*dynget(t_dynarray *this, size_t i)
 {
-	return this->content + (this->type * i);
+	return (this->content + (this->type * i));
 }
