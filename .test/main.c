@@ -51,6 +51,13 @@ static short	assert(t_dynarray* this)
 			printf("[FAILURE][%i]: %d\n", i, content[i]);
 			r = 0;
 		}
+	if (this->nullterm)
+	{
+		if (this->capacity <= this->length)
+			r = 0 & printf("[FAILURE][nullterm]Capacity too short (%zu/%zu).\n", this->capacity, this->length);
+		else if (content[this->length])
+			r = 0 & printf("[FAILURE][nullterm] Terminator is %d.\n", content[this->length]);
+	}
 	return (r);
 }
 
@@ -62,16 +69,18 @@ int	main()
 	void*	err;
 
 	// Dyninit
-	err = dyninit(&array, sizeof(int), 32, 0);
+	err = dyninit(&array, sizeof(int), 32, 1);
 	if (!err){
 		printf("Malloc failed\n");
 		exit(-1);
 	}
-	assertcap(&array, 32);
-	
+	assertcap(&array, 32 + array.nullterm);
+
 	array.length = 32;
 	for (int i=0; i<32; i++)
 		(*content)[i] = i;
+	if (array.nullterm)
+		(*content)[32] = 0;
 
 	assert(&array);
 
@@ -82,7 +91,7 @@ int	main()
 		exit(-1);
 	}
 
-	assertcap(&array, 64);
+	assertcap(&array, array.nullterm ? 66 : 64);
 	assert(&array);
 
 	array.length = 64;
@@ -112,7 +121,7 @@ int	main()
 		dynappendnull(&array);
 	for (int i=4; i>0; i--)
 		if ((*content)[array.length - i] != 0)
-			printf("[FAILURE][Value] %d != 0\n", (*content)[array.length - i]);
+			printf("[FAILURE][Value][%i] %d != 0\n", i, (*content)[array.length - i]);
 
 	printf("Done\n");
 }

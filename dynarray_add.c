@@ -82,7 +82,9 @@ extern void		*dynappendnull(t_dynarray *this)
 {
 	if (!dynexpand(this, 1))
 		return (NULL);
-	dynsetnull(this, this->nullterm ? ++this->length : this->length++);
+	dynsetnull(this, this->length);
+	this->length++;
+	dynsetnull(this, this->length);
 	return (this->content);
 }
 

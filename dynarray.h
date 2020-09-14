@@ -18,8 +18,9 @@
 /*
 ** @var size_t type	The size of each element.
 ** @var size_t capacity	The maximum capacity of the array object.
-** @var size_t length	The current amount of items in the array. This does NOT
-**  include the optional NULL-terminator.
+** 	Exceptionally, this DOES include the optional automatic null-terminator.
+** @var size_t length	The current amount of items in the array.
+** 	This DOES NOT include the optional automatic NULL-terminator.
 ** @var bool nullterm	Whether the array should have an automatic NULL-termina
 ** tor.
 ** @var void* content	The actual content of the array.

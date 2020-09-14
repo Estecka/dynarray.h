@@ -18,13 +18,15 @@
 **  its content will be NULL, its capacity 0, and nullterm FALSE.
 ** @param t_dynarray* this The array to initialize.
 ** @param size_t type	The size of a single element of the stored type.
-** @param size_t capacity	The initial size of the array.
+** @param size_t capacity	The initial size of the array. This does not includ
+** e the automatic NULL-terminator.
 ** @return void* The updated pointer to the array, or NULL if an error occured.
 */
 
 extern void		*dyninit(t_dynarray *this, size_t type, size_t capacity,
 short nullterm)
 {
+	capacity += (nullterm != 0);
 	this->content = malloc(type * capacity);
 	this->type = type;
 	this->capacity = this->content ? capacity : 0;
