@@ -61,7 +61,7 @@ static short	assert(t_dynarray* this)
 	return (r);
 }
 
-int	main()
+static void TestAll(short autonull)
 {
 	t_dynarray array;
 	int**	content = (int**)&array.content;
@@ -69,17 +69,17 @@ int	main()
 	void*	err;
 
 	// Dyninit
-	err = dyninit(&array, sizeof(int), 32, 1);
+	err = dyninit(&array, sizeof(int), 32, autonull);
 	if (!err){
 		printf("Malloc failed\n");
 		exit(-1);
 	}
-	assertcap(&array, 32 + array.nullterm);
+	assertcap(&array, 32 + autonull);
 
 	array.length = 32;
 	for (int i=0; i<32; i++)
 		(*content)[i] = i;
-	if (array.nullterm)
+	if (autonull)
 		(*content)[32] = 0;
 
 	assert(&array);
@@ -91,7 +91,7 @@ int	main()
 		exit(-1);
 	}
 
-	assertcap(&array, array.nullterm ? 66 : 64);
+	assertcap(&array, autonull ? 66 : 64);
 	assert(&array);
 
 	array.length = 64;
@@ -123,5 +123,12 @@ int	main()
 		if ((*content)[array.length - i] != 0)
 			printf("[FAILURE][Value][%i] %d != 0\n", i, (*content)[array.length - i]);
 
-	printf("Done\n");
+	free(array.content);
+	printf("Done (AutoNull == %d)\n", autonull);
+}
+
+int main()
+{
+	TestAll(0);
+	TestAll(1);
 }
