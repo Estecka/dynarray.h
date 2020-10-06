@@ -92,3 +92,26 @@ extern void		*dynget(t_dynarray *this, size_t i)
 {
 	return (this->content + (this->type * i));
 }
+
+/*
+** Sets the value of an existing element of the array.
+** Index overflow and underflow are not checked for.
+** @param t_dynarray this	The array to edit.
+** @param size_t i	The index of the element to overwrite.
+** @param const void*	A pointer to the value to be copied.
+*/
+
+extern void		dynset(t_dynarray *this, size_t i, const void *value)
+{
+	const char	*src;
+	char		*dst;
+
+	src = (const char*)value;
+	dst = ((char*)this->content) + (i * this->type);
+	i = 0;
+	while (i < this->type)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+}

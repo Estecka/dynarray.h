@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <string.h>
 #include "../dynarray.h"
 
 static void printarr(t_dynarray* this)
@@ -63,6 +64,10 @@ static short	assert(t_dynarray* this)
 
 static void TestAll(short autonull)
 {
+	int		src[128];
+	for (int i=0; i<128; i++)
+		src[i] = i;
+
 	t_dynarray array;
 	int**	content = (int**)&array.content;
 	int		value;
@@ -104,6 +109,11 @@ static void TestAll(short autonull)
 	assertlength(&array, 65);
 	assert(&array);
 
+	// Dynappendn
+	dynappendn(&array, src+65, 128-65);
+	assertcap(&array, (autonull?66:64) * 2);
+	assertlength(&array, 128);
+	assert(&array);
 
 	// Dyninsert
 	for (int i=32; i<array.length; i++)

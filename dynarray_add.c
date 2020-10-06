@@ -13,29 +13,6 @@
 #include "dynarray.h"
 
 /*
-** Sets the value of an existing element of the array.
-** Index overflow and underflow are not checked for.
-** @param t_dynarray this	The array to edit.
-** @param size_t i	The index of the element to overwrite.
-** @param const void*	A pointer to the value to be copied.
-*/
-
-extern void		dynset(t_dynarray *this, size_t i, const void *value)
-{
-	const char	*src;
-	char		*dst;
-
-	src = (const char*)value;
-	dst = ((char*)this->content) + (i * this->type);
-	i = 0;
-	while (i < this->type)
-	{
-		dst[i] = src[i];
-		i++;
-	}
-}
-
-/*
 ** Sets the existing element of the array to zeroes.
 ** Index overflow and underflow are not checked for.
 ** @param t_dynarray this	The array to edit.
@@ -68,6 +45,32 @@ extern void		*dynappend(t_dynarray *this, const void *value)
 	this->length++;
 	if (this->nullterm)
 		dynsetnull(this, this->length);
+	return (this->content);
+}
+
+/*
+** Appends n elements from another array.
+** @param t_dynarray* this	The array to expand.
+** @param const void* src	A pointer to the first element to append.
+** @param size_t count	The amount of elements to append
+** @return void*	The updated pointer to the newly formed array, or NULL if a
+** n error ocurred.
+*/
+
+extern void		*dynappendn(t_dynarray *this, const void *src,
+unsigned int count)
+{
+	unsigned int i;
+
+	if (!dynexpand(this, count))
+		return (NULL);
+	i = 0;
+	while (i < count)
+	{
+		dynset(this, this->length + i, &src[i * this->type]);
+		i++;
+	}
+	this->length += count;
 	return (this->content);
 }
 
