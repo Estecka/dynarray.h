@@ -67,7 +67,7 @@ unsigned int count)
 	i = 0;
 	while (i < count)
 	{
-		dynset(this, this->length + i, &src[i * this->type]);
+		dynset(this, this->length + i, src + (i * this->type));
 		i++;
 	}
 	this->length += count;
