@@ -50,4 +50,6 @@ void	dynsetnull(t_dynarray *this, size_t i);
 
 void	*dynget(t_dynarray *this, size_t index);
 
+void	dynremove(t_dynarray *this, size_t index);
+
 #endif
