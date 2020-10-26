@@ -6,7 +6,7 @@
 /*   By: abaur <abaur@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 15:42:05 by abaur             #+#    #+#             */
-/*   Updated: 2020/02/12 15:15:34 by abaur            ###   ########.fr       */
+/*   Updated: 2020/10/26 12:23:26 by abaur            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ unsigned int count)
 		i++;
 	}
 	this->length += count;
+	if (this->nullterm)
+		dynsetnull(this, this->length);
 	return (this->content);
 }
 
